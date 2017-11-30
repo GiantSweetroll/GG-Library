@@ -70,6 +70,18 @@ public class XMLManager
 	}
 	
 	/**
+	 * Creates an empty XML document.
+	 * @return the document
+	 * @throws ParserConfigurationException the parser configuration exception
+	 */
+	public static Document createDocument() throws ParserConfigurationException
+	{
+		DocumentBuilderFactory dfc = DocumentBuilderFactory.newInstance();
+		DocumentBuilder db = dfc.newDocumentBuilder();
+		return db.newDocument();
+	}
+	
+	/**
 	 * Gets the element at a particular index in a particular Node from the NodeList.
 	 *
 	 * @param nodeList the NodeList
