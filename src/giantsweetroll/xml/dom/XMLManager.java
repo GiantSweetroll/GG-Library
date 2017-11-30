@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -118,10 +119,12 @@ public class XMLManager
 	 * @param document the document
 	 * @param file the output file
 	 */
-	public static void exportXML(Document document, File file) throws TransformerException
+	public static void exportXML(Document document, File file, int indent) throws TransformerException
 	{
 		TransformerFactory tf = TransformerFactory.newInstance();
 		Transformer transformer = tf.newTransformer();
+		transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+		transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", Integer.toString(indent));
 		DOMSource source = new DOMSource(document);
 		
 		StreamResult streamResult = new StreamResult(file);
