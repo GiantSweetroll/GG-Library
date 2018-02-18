@@ -95,6 +95,7 @@ public class GNumbers
 		return true;
 	}
 	
+	
 	public static float round(float value, int precision)
 	{
 	    int scale = (int) Math.pow(10, precision);
@@ -105,4 +106,66 @@ public class GNumbers
 	    int scale = (int) Math.pow(10, precision);
 	    return (double) Math.round(value * scale) / scale;
 	}
+	
+	/*
+	public static float round(float value, int decimalPlaces)
+	{
+		if (decimalPlaces < 0)
+		{
+			throw new NumberFormatException("Invalid decimal places: " + decimalPlaces);
+		}
+		
+		String valueString = Float.toString(value);
+		
+		//Check the decimal place of value
+		String decimals = valueString.substring(valueString.indexOf(".")+1, valueString.length());
+		if (decimals.length() < decimalPlaces)
+		{
+			StringBuilder sb = new StringBuilder(valueString);
+			int diff = decimalPlaces - decimals.length();
+			for (int i=0; i<=diff; i++)
+			{
+				sb.append("0");
+			}
+			valueString = sb.toString();
+		}
+		else if (decimals.length()==decimalPlaces)
+		{
+			return value;
+		}
+		
+		valueString = valueString.substring(0, valueString.indexOf(".")+ decimalPlaces + 2);	//Reduce to the decimal place + 1
+		
+		System.out.println("valueString: " + Float.parseFloat(valueString));
+		
+		//Round
+		String trimmedValue = valueString.substring(0, valueString.length()-1);   //value string with proper decimal places
+		System.out.println("trimmedValue: " + Float.parseFloat(trimmedValue));
+		float smallestDecimal = Float.parseFloat(valueString) - Float.parseFloat(trimmedValue);
+		System.out.println("smallestDecimal before trim: " + smallestDecimal);
+		int lastDecimal = Integer.parseInt(valueString.substring(valueString.length()-1, valueString.length()));
+		System.out.println("lastDecimal: " + lastDecimal);
+		smallestDecimal = Float.parseFloat(Float.toString(smallestDecimal).substring(0, Float.toString(smallestDecimal).indexOf(Integer.toString(lastDecimal))+1));
+		System.out.println("smallestDecimal after trim: " + smallestDecimal);
+		if (lastDecimal>=5 && lastDecimal<10)
+		{
+			String smallestDecimalString = Float.toString(smallestDecimal);
+			StringBuilder sb = new StringBuilder(smallestDecimalString.substring(0, smallestDecimalString.length()-2));
+			sb.append("1");
+			return Float.parseFloat(trimmedValue) + Float.parseFloat(sb.toString());
+			
+//			float trimmedLastDecimal = Float.parseFloat(trimmedValue) % Float.parseFloat(trimmedValue.substring(0, trimmedValue.length()-1));
+//			return trimmedLastDecimal;
+		}
+		else
+		{
+			return Float.parseFloat(trimmedValue);
+		}
+	}
+	
+	public static void main(String args[])
+	{
+		System.out.println(round(29.3955f, 3));
+	}
+	*/
 }
