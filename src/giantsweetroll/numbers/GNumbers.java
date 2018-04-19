@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class GNumbers 
 {
 	//Randomization
-	public static int radomize(int min, int max)
+	public static int randomize(int min, int max)
 	{
 		return ThreadLocalRandom.current().nextInt(min, max + 1);
 	}

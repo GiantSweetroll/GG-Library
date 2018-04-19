@@ -310,7 +310,7 @@ public class Date
 		}
 		else
 		{
-			return null;
+			return date;
 		}
 	}
 	public static Date getLaterDate(Date date, Date date2)
@@ -325,7 +325,7 @@ public class Date
 		}
 		else
 		{
-			return null;
+			return date;
 		}
 	}
 	
