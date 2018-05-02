@@ -1,14 +1,16 @@
 package giantsweetroll.test;
 
-import giantsweetroll.date.Date;
+import giantsweetroll.numbers.Binary;
+import giantsweetroll.numbers.Hexadecimal;
+import giantsweetroll.numbers.Octal;
 
 public class Test 
 {	
 	public static void main(String args[])
 	{
-		Date date = new Date(3, 2, 2018);
-		Date date2 = new Date(3, 2, 2015);
-		
-		System.out.println(Date.getDaysDifference(date, date2, false));
+		long decimal = 12;
+		System.out.println(Binary.getBinaryFromDecimal(decimal));
+		System.out.println(Octal.getOctal(decimal));
+		System.out.println(Hexadecimal.getHexaDecimal(decimal));
 	}
 }
