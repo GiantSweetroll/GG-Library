@@ -13,7 +13,6 @@ import java.util.Date;
 public class DateManager 
 {
 	
-	/** The Constant sdf. */
 	private static final DateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     
     /**

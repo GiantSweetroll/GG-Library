@@ -172,7 +172,7 @@ public class FileManager
 	}
 
 	/**
-	 * Gets the list of files in the directory.
+	 * Gets the names of files in the directory.
 	 *
 	 * @param list the list to which the list of files is to be listed
 	 * @param directory the directory
