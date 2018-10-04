@@ -33,7 +33,7 @@ public class FloatFilter extends DocumentFilter
 	      }
 	   }
 
-	   //Overriden Methods
+	   //Overridden Methods
 	   @Override
 	   public void insertString(FilterBypass fb, int offset, String string,
 	         AttributeSet attr) throws BadLocationException {
@@ -103,7 +103,12 @@ public class FloatFilter extends DocumentFilter
 
 	      if (isFloat(sb.toString())) {
 	         super.remove(fb, offset, length);
-	      } else {
+	      }
+	      else if (sb.toString().equals(""))
+	      {
+	    	  super.remove(fb, offset, length);
+	      }
+	      else {
 	         // warn the user and don't allow the insert
 	      }
 

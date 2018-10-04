@@ -15,28 +15,33 @@ public class IntegerFilter extends DocumentFilter
 		this.max = max;
 	}
 	 
-	 	private boolean lessThanMin(int num)
-	 	{
-	 		return num<min;
-	 	}
-	 	private boolean moreThanMax(int num)
-	 	{
-	 		return num>max;
-	 	}
+	private boolean lessThanMin(int num)
+	{
+		return num<min;
+	}
+	private boolean moreThanMax(int num)
+	{
+		return num>max;
+	}
 	 
-	   private boolean isInteger(String text) {
-	      try {
-	         Integer.parseInt(text);
-	         return true;
-	      } catch (NumberFormatException e) {
-	         return false;
-	      }
-	   }
+	private boolean isInteger(String text) 
+	{
+		try 
+		{
+			Integer.parseInt(text);
+	        return true;
+	    } 
+		catch (NumberFormatException e)
+		{
+	        return false;
+	    }
+	}
 
-	   //Overriden Methods
+	   //Overridden Methods
 	   @Override
 	   public void insertString(FilterBypass fb, int offset, String string,
-	         AttributeSet attr) throws BadLocationException {
+	         AttributeSet attr) throws BadLocationException 
+	   {
 
 	      Document doc = fb.getDocument();
 	      StringBuilder sb = new StringBuilder();
@@ -53,7 +58,9 @@ public class IntegerFilter extends DocumentFilter
 	        	 string = Integer.toString(max);
 	         }
 	         super.insertString(fb, offset, string, attr);
-	      } else {
+	      } 
+	      else 
+	      {
 	         // warn the user and don't allow the insert
 	      }
 	   }
@@ -94,7 +101,13 @@ public class IntegerFilter extends DocumentFilter
 
 	      if (isInteger(sb.toString())) {
 	         super.remove(fb, offset, length);
-	      } else {
+	      }
+	      else if (sb.toString().equals(""))
+	      {
+	    	  super.remove(fb, offset, length);
+	      }
+	      else 
+	      {
 	         // warn the user and don't allow the insert
 	      }
 
