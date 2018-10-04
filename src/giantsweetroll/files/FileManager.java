@@ -170,6 +170,54 @@ public class FileManager
 		
 		return data;
 	}
+	
+	/**
+	 * Gets the files in the directory. Folders will not be opened.
+	 *
+	 * @param directory the directory
+	 * @return the files in an array
+	 */
+	public static void getListOfFiles(List<File> list, String directory)
+	{	
+		File file = new File(directory);
+		File[] files = file.listFiles();
+	
+		for (File file2 : files)
+		{
+			list.add(file2);
+		}
+	}
+	
+	/**
+	 * Gets the files in the directory. Folders will not be opened.
+	 *
+	 * @param directory the directory
+	 * @param openFolders whether to open folders or not
+	 * @return the files in an array
+	 */
+	public static void getListOfFiles(List<File> list, String directory, boolean openFolders)
+	{
+		if (openFolders)
+		{
+			File file = new File(directory);
+			File[] files = file.listFiles();
+			for (File file2 : files)
+			{
+				if (file2.isDirectory())
+				{
+					FileManager.getListOfFiles(list, file2.getAbsolutePath(), openFolders);
+				}
+				else
+				{
+					list.add(file2);
+				}
+			}
+		}
+		else
+		{
+			FileManager.getListOfFiles(list, directory);
+		}
+	}
 
 	/**
 	 * Gets the names of files in the directory.
@@ -284,7 +332,7 @@ public class FileManager
 	 * @param directory the directory
 	 * @param openFolders whether to open files or not
 	 * @return the list of files
-	 */
+	 */ /*
 	@Deprecated
 	public static void getListOfFiles(List<String> list, String directory, boolean openFolders)
 	{	
@@ -315,7 +363,7 @@ public class FileManager
 				list.add(file.getName());
 			}
 		}
-	}
+	}		*/
 	
 	/**
 	 * Save image.
