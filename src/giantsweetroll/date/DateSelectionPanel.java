@@ -57,7 +57,7 @@ public class DateSelectionPanel extends JPanel implements ActionListener
 		this.comboMonth = new JComboBox<String>(DateManager.getMonthNameList().toArray(new String[12]));
 		this.comboDay = new JComboBox<String>(DateManager.getMaxDaysString(Byte.parseByte(Integer.toString(this.comboMonth.getSelectedIndex()+1)), Short.parseShort(this.comboYear.getSelectedItem().toString())));
 		this.butAuto = new JButton(autoText);
-		this.butDefault = new JButton("defaultText");
+		this.butDefault = new JButton(defaultText);
 		this.c = new GridBagConstraints();
 		this.defaultDate = new Date();
 		
