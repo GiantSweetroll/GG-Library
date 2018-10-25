@@ -5,6 +5,7 @@ public class Date
 	private int day, month, year;
 	
 	//Format Constants
+	public static final int DAY = 0, MONTH = 1, YEAR = 2;
 	
 	//Constructors
 	public Date()
@@ -13,7 +14,6 @@ public class Date
 		this.month = Integer.parseInt(DateManager.getCurrentMonth());
 		this.year = Integer.parseInt(DateManager.getCurrentYear());
 	}
-	
 	public Date(int day, int month, int year)
 	{
 		this.year = year;
@@ -158,12 +158,28 @@ public class Date
 			}
 		}
 	}
-	public boolean sameDateAs(Date date)
+	public String toString(int first, int mid, int last, String separator)
 	{
-		return this.getDay() == date.getDay() && this.getMonth() == date.getMonth() && this.getYear() == date.getYear();
+		return this.getString(first) + separator + this.getString(mid) + separator + this.getString(last);
 	}
 	
 	//Static methods
+	public static boolean areSameDate(Date date1, Date date2)
+	{
+		return haveSameYear(date1, date2) && haveSameMonth(date1, date2) && haveSameDay(date1, date2);
+	}
+	public static boolean haveSameYear(Date date1, Date date2)
+	{
+		return date1.getYear() == date2.getYear();
+	}
+	public static boolean haveSameMonth(Date date1, Date date2)
+	{
+		return date1.getMonth() == date2.getMonth();
+	}
+	public static boolean haveSameDay(Date date1, Date date2)
+	{
+		return date1.getDay() == date2.getDay();
+	}
 	public static boolean monthIsFebruary(int month)
 	{
 		return month == 2;
@@ -204,7 +220,7 @@ public class Date
 	}
 	public static int getDaysDifference(Date from, Date to, boolean includeEndDate)
 	{
-		if (from.sameDateAs(to))		//if same date
+		if (Date.areSameDate(from,  to))		//if same date
 		{
 			return 0;
 		}
@@ -427,6 +443,25 @@ public class Date
 					this.year++;
 				}
 			}
+		}
+	}
+	private String getString(int type)
+	{
+		if (type == Date.DAY)
+		{
+			return Integer.toString(this.getDay());
+		}
+		else if (type == Date.MONTH)
+		{
+			return Integer.toString(this.getMonth());
+		}
+		else if (type == Date.YEAR)
+		{
+			return Integer.toString(this.getYear());
+		}
+		else
+		{
+			return "";
 		}
 	}
 }
