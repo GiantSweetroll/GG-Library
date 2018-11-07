@@ -12,7 +12,7 @@ import javax.swing.plaf.FontUIResource;
 /**
  * The Class GMisc.
  */
-public class GMisc 
+public class GGUtilities 
 {
 	
 	/**
