@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 import java.util.Scanner;
 import java.util.Set;
 import java.util.zip.ZipEntry;
@@ -182,7 +182,7 @@ public class FileManager
 	 * @param directory the directory
 	 * @return the files in an array
 	 */
-	public static void getListOfFiles(List<File> list, String directory)
+	public static void getListOfFiles(Collection<File> list, String directory)
 	{	
 		File file = new File(directory);
 		File[] files = file.listFiles();
@@ -217,38 +217,7 @@ public class FileManager
 	 * @param openFolders whether to open folders or not
 	 * @return the files in an array
 	 */
-	public static void getListOfFiles(List<File> list, String directory, boolean openFolders)
-	{
-		if (openFolders)
-		{
-			File file = new File(directory);
-			File[] files = file.listFiles();
-			for (File file2 : files)
-			{
-				if (file2.isDirectory())
-				{
-					FileManager.getListOfFiles(list, file2.getAbsolutePath(), openFolders);
-				}
-				else
-				{
-					list.add(file2);
-				}
-			}
-		}
-		else
-		{
-			FileManager.getListOfFiles(list, directory);
-		}
-	}
-	
-	/**
-	 * Gets the files in the directory. Folders will not be opened.
-	 *
-	 * @param directory the directory
-	 * @param openFolders whether to open folders or not
-	 * @return the files in an array
-	 */
-	public static void getListOfFiles(Set<File> list, String directory, boolean openFolders)
+	public static void getListOfFiles(Collection<File> list, String directory, boolean openFolders)
 	{
 		if (openFolders)
 		{
@@ -282,113 +251,7 @@ public class FileManager
 	 * @param returnFormat whether to return just the file names, path, or absolute path
 	 * @return the list of files
 	 */
-	public static void getListOfFiles(List<String> list, 
-										String directory, 
-										boolean openFolders, 
-										int format, 
-										int returnFormat)
-	{	
-		if (openFolders)
-		{
-			File folder = new File(directory);
-			File[] listOfFiles = folder.listFiles();
-			
-			for (File fileEntry : listOfFiles) 
-		    {
-		        if (fileEntry.isDirectory())
-		        {
-		           getListOfFiles(list, fileEntry.getAbsolutePath(), true, format, returnFormat);
-		        } 
-		        else
-		        {
-		        	if (returnFormat == FileManager.NAME_ONLY)
-		        	{
-		        		list.add(fileEntry.getName());
-		        	}
-		        	else if (returnFormat == FileManager.ABSOLUTE_PATH)
-		        	{
-		        		list.add(fileEntry.getAbsolutePath());
-		        	}
-		        	else if (returnFormat == FileManager.SUB_PATH)
-		        	{
-		        		list.add(fileEntry.getPath());
-		        	}
-		        }
-		    }
-		}
-		else
-		{
-			File folder = new File(directory);
-			File[] listOfFiles = folder.listFiles();
-
-			for (File file : listOfFiles) 
-			{
-				if (format == FileManager.FILE_ONLY)
-				{
-					if (file.isFile()) 
-				    {
-						if (returnFormat == FileManager.NAME_ONLY)
-			        	{
-			        		list.add(file.getName());
-			        	}
-			        	else if (returnFormat == FileManager.ABSOLUTE_PATH)
-			        	{
-			        		list.add(file.getAbsolutePath());
-			        	}
-			        	else if (returnFormat == FileManager.SUB_PATH)
-			        	{
-			        		list.add(file.getPath());
-			        	}
-				    }
-				}
-				else if (format == FileManager.FOLDER_ONLY)
-				{
-					if (file.isDirectory())
-					{
-						if (returnFormat == FileManager.NAME_ONLY)
-			        	{
-			        		list.add(file.getName());
-			        	}
-			        	else if (returnFormat == FileManager.ABSOLUTE_PATH)
-			        	{
-			        		list.add(file.getAbsolutePath());
-			        	}
-			        	else if (returnFormat == FileManager.SUB_PATH)
-			        	{
-			        		list.add(file.getPath());
-			        	}
-					}
-				}
-				else if (format == FileManager.BOTH_FOLDER_AND_FILE)
-				{
-					if (returnFormat == FileManager.NAME_ONLY)
-		        	{
-		        		list.add(file.getName());
-		        	}
-		        	else if (returnFormat == FileManager.ABSOLUTE_PATH)
-		        	{
-		        		list.add(file.getAbsolutePath());
-		        	}
-		        	else if (returnFormat == FileManager.SUB_PATH)
-		        	{
-		        		list.add(file.getPath());
-		        	}
-				}
-			}
-		}
-	}
-	
-	/**
-	 * Gets the names of files in the directory.
-	 *
-	 * @param list the list to which the list of files is to be listed
-	 * @param directory the directory
-	 * @param openFolders whether to open folders or not
-	 * @param format the imported file format (file or directory/folder or both)
-	 * @param returnFormat whether to return just the file names, path, or absolute path
-	 * @return the list of files
-	 */
-	public static void getListOfFiles(Set<String> list, 
+	public static void getListOfFiles(Collection<String> list, 
 										String directory, 
 										boolean openFolders, 
 										int format, 
@@ -557,9 +420,11 @@ public class FileManager
 		{
 			zipFolder(zos, file, "");
 		}
+		
+		zos.close();
 	}
 	
-	private static void zipFolder(ZipOutputStream zos, File folderToZip, String parentName) throws IOException
+	public static void zipFolder(ZipOutputStream zos, File folderToZip, String parentName) throws IOException
 	{
 		String myName = parentName + folderToZip.getName() + File.separator;
 		
@@ -568,20 +433,26 @@ public class FileManager
 		
 		File[] contents = folderToZip.listFiles();
 		
-		for (File f : contents)
+		try
 		{
-			if (f.isFile())
+			for (File f : contents)
 			{
-				zipFile(f, myName, zos);
-			}
-			else
-			{
-				zipFolder(zos, f, myName);
+				if (f.isFile())
+				{
+					zipFile(f, myName, zos);
+				}
+				else
+				{
+					zipFolder(zos, f, myName);
+				}
 			}
 		}
+		catch(NullPointerException ex){}
+		
+		zos.closeEntry();
 	}
 	
-	private static void zipFile(File fileToZip, String parentName, ZipOutputStream zos) throws IOException
+	public static void zipFile(File fileToZip, String parentName, ZipOutputStream zos) throws IOException
 	{
 		ZipEntry zipEntry = new ZipEntry(parentName + fileToZip.getName());
 		zos.putNextEntry(zipEntry);
@@ -595,7 +466,7 @@ public class FileManager
 			zos.write(buffer, 0, bytesRead);
 		}
 		
-		zos.closeEntry();
 		fis.close();
+		zos.closeEntry();
 	}
 }
