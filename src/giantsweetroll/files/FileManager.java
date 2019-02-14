@@ -2,6 +2,8 @@ package giantsweetroll.files;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -9,6 +11,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 import javax.imageio.ImageIO;
 
@@ -537,5 +541,61 @@ public class FileManager
 			outputFile.createNewFile();
 		}
 		ImageIO.write(image, fileFormat, outputFile);
+	}
+	
+	public static void zip(String fileToZip, String targetZipLocation) throws IOException
+	{
+		FileOutputStream fos = new FileOutputStream(targetZipLocation);
+		ZipOutputStream zos = new ZipOutputStream(fos);
+		
+		File file = new File(fileToZip);
+		if (file.isFile())
+		{
+			zipFile(file, "", zos);
+		}
+		else if (file.isDirectory())
+		{
+			zipFolder(zos, file, "");
+		}
+	}
+	
+	private static void zipFolder(ZipOutputStream zos, File folderToZip, String parentName) throws IOException
+	{
+		String myName = parentName + folderToZip.getName() + File.separator;
+		
+		ZipEntry zipEntry = new ZipEntry(myName);
+		zos.putNextEntry(zipEntry);
+		
+		File[] contents = folderToZip.listFiles();
+		
+		for (File f : contents)
+		{
+			if (f.isFile())
+			{
+				zipFile(f, myName, zos);
+			}
+			else
+			{
+				zipFolder(zos, f, myName);
+			}
+		}
+	}
+	
+	private static void zipFile(File fileToZip, String parentName, ZipOutputStream zos) throws IOException
+	{
+		ZipEntry zipEntry = new ZipEntry(parentName + fileToZip.getName());
+		zos.putNextEntry(zipEntry);
+		
+		FileInputStream fis = new FileInputStream(fileToZip);
+		byte[] buffer = new byte[1024];
+		int bytesRead;
+		
+		while ((bytesRead = fis.read(buffer)) > 0)
+		{
+			zos.write(buffer, 0, bytesRead);
+		}
+		
+		zos.closeEntry();
+		fis.close();
 	}
 }
