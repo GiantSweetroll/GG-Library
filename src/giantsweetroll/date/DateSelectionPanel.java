@@ -95,8 +95,27 @@ public class DateSelectionPanel extends JPanel implements ActionListener
 	
 	private void refreshDayRange()
 	{	
+		int index = -1;
+		try
+		{
+			index = this.comboDay.getSelectedIndex();
+		}
+		catch(NullPointerException ex) {}
 		this.comboDay.setModel(new DefaultComboBoxModel<String>(DateManager.getMaxDaysString(Byte.parseByte(Integer.toString(this.comboMonth.getSelectedIndex()+1)), 
 																				Short.parseShort(this.comboYear.getSelectedItem().toString()))));
+		int size = this.comboDay.getModel().getSize();
+		if (index < 0)
+		{
+			this.comboDay.setSelectedIndex(0);			//First index
+		}
+		else if (index <= size-1)
+		{
+			this.comboDay.setSelectedIndex(index);
+		}
+		else
+		{
+			this.comboDay.setSelectedIndex(size-1);		//Last index
+		}
 		
 		this.revalidate();
 		this.repaint();
