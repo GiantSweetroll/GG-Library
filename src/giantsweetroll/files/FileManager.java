@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Scanner;
 import java.util.Set;
@@ -15,6 +16,8 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 import javax.imageio.ImageIO;
+
+import giantsweetroll.comparators.FileComparator;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -186,6 +189,7 @@ public class FileManager
 	{	
 		File file = new File(directory);
 		File[] files = file.listFiles();
+		Arrays.sort(files, new FileComparator());
 	
 		for (File file2 : files)
 		{
@@ -203,6 +207,7 @@ public class FileManager
 	{	
 		File file = new File(directory);
 		File[] files = file.listFiles();
+		Arrays.sort(files, new FileComparator());
 	
 		for (File file2 : files)
 		{
@@ -223,6 +228,7 @@ public class FileManager
 		{
 			File file = new File(directory);
 			File[] files = file.listFiles();
+			Arrays.sort(files, new FileComparator());
 			for (File file2 : files)
 			{
 				if (file2.isDirectory())
@@ -262,6 +268,8 @@ public class FileManager
 			File folder = new File(directory);
 			File[] listOfFiles = folder.listFiles();
 			
+			Arrays.sort(listOfFiles, new FileComparator());
+			
 			for (File fileEntry : listOfFiles) 
 		    {
 		        if (fileEntry.isDirectory())
@@ -270,18 +278,7 @@ public class FileManager
 		        } 
 		        else
 		        {
-		        	if (returnFormat == FileManager.NAME_ONLY)
-		        	{
-		        		list.add(fileEntry.getName());
-		        	}
-		        	else if (returnFormat == FileManager.ABSOLUTE_PATH)
-		        	{
-		        		list.add(fileEntry.getAbsolutePath());
-		        	}
-		        	else if (returnFormat == FileManager.SUB_PATH)
-		        	{
-		        		list.add(fileEntry.getPath());
-		        	}
+		        	checkStateAndAddToList(list, fileEntry, returnFormat);
 		        }
 		    }
 		}
@@ -289,6 +286,8 @@ public class FileManager
 		{
 			File folder = new File(directory);
 			File[] listOfFiles = folder.listFiles();
+			
+			Arrays.sort(listOfFiles, new FileComparator());
 
 			for (File file : listOfFiles) 
 			{
@@ -296,52 +295,19 @@ public class FileManager
 				{
 					if (file.isFile()) 
 				    {
-						if (returnFormat == FileManager.NAME_ONLY)
-			        	{
-			        		list.add(file.getName());
-			        	}
-			        	else if (returnFormat == FileManager.ABSOLUTE_PATH)
-			        	{
-			        		list.add(file.getAbsolutePath());
-			        	}
-			        	else if (returnFormat == FileManager.SUB_PATH)
-			        	{
-			        		list.add(file.getPath());
-			        	}
+						checkStateAndAddToList(list, file, returnFormat);
 				    }
 				}
 				else if (format == FileManager.FOLDER_ONLY)
 				{
 					if (file.isDirectory())
 					{
-						if (returnFormat == FileManager.NAME_ONLY)
-			        	{
-			        		list.add(file.getName());
-			        	}
-			        	else if (returnFormat == FileManager.ABSOLUTE_PATH)
-			        	{
-			        		list.add(file.getAbsolutePath());
-			        	}
-			        	else if (returnFormat == FileManager.SUB_PATH)
-			        	{
-			        		list.add(file.getPath());
-			        	}
+						checkStateAndAddToList(list, file, returnFormat);
 					}
 				}
 				else if (format == FileManager.BOTH_FOLDER_AND_FILE)
 				{
-					if (returnFormat == FileManager.NAME_ONLY)
-		        	{
-		        		list.add(file.getName());
-		        	}
-		        	else if (returnFormat == FileManager.ABSOLUTE_PATH)
-		        	{
-		        		list.add(file.getAbsolutePath());
-		        	}
-		        	else if (returnFormat == FileManager.SUB_PATH)
-		        	{
-		        		list.add(file.getPath());
-		        	}
+					checkStateAndAddToList(list, file, returnFormat);
 				}
 			}
 		}
@@ -468,5 +434,22 @@ public class FileManager
 		
 		fis.close();
 		zos.closeEntry();
+	}
+	
+	//Private Methods
+	private static void checkStateAndAddToList(Collection<String> list, File file, int returnFormat)
+	{
+		if (returnFormat == FileManager.NAME_ONLY)
+    	{
+    		list.add(file.getName());
+    	}
+    	else if (returnFormat == FileManager.ABSOLUTE_PATH)
+    	{
+    		list.add(file.getAbsolutePath());
+    	}
+    	else if (returnFormat == FileManager.SUB_PATH)
+    	{
+    		list.add(file.getPath());
+    	}
 	}
 }
