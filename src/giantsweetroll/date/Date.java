@@ -20,6 +20,42 @@ public class Date
 		this.parseMonth(month);
 		this.parseDay(day);
 	}
+	public Date(String date, int first, int mid, int last, String separator)
+	{
+		int index = date.indexOf(separator);
+		int val = 1;
+		try
+		{
+			val = Integer.parseInt(date.substring(0, index));
+		}
+		catch(NumberFormatException e1)
+		{
+			val = 1;
+		}
+		this.parse(val, first);
+		
+		int next = date.indexOf(separator, index+1);
+		try
+		{
+			val = Integer.parseInt(date.substring(index+1, next));
+		}
+		catch(NumberFormatException e1)
+		{
+			val = 1;
+		}
+		this.parse(val, mid);
+		index = next;
+		
+		try
+		{
+			val = Integer.parseInt(date.substring(index+1));
+		}
+		catch(NumberFormatException e1)
+		{
+			val = 1;
+		}
+		this.parse(val, last);
+	}
 	
 	//Methods
 	public int getDay()
@@ -463,5 +499,30 @@ public class Date
 		{
 			return "";
 		}
+	}
+	private void parse(int val, int type)
+	{
+		if (type == Date.DAY)
+		{
+			this.day = val;
+		}
+		else if (type == Date.MONTH)
+		{
+			this.month = val;
+		}
+		else if (type == Date.YEAR)
+		{
+			this.year = val;
+		}
+	}
+	
+	public static void main (String args[])
+	{
+		Date date = new Date();
+		String str = date.toString(DAY, MONTH, YEAR, "-");
+		System.out.println(str);
+		Date newDate = new Date(str, DAY, MONTH, YEAR, "-");
+		str = newDate.toString(DAY, MONTH, YEAR, "-");
+		System.out.println(str);
 	}
 }
